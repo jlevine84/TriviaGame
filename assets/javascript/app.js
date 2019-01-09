@@ -4,7 +4,7 @@ var game = {
         question: "What is an Arcade?",
         answer: "A place to play games!", 
         funfact: "An arcade is also classically defined as a covered passageway with arches along one or both sides.",
-        options: [],
+        options: ["A place to play games!", "A place to dock a ship!", "A place to get your haircut!", "A place to park your car!"],
     },
     question2: {
         question: "What character jumped over barrels in Donkey Kong?",
@@ -33,7 +33,7 @@ var game = {
     question6: {
         question: "What game caused the current rating system for video games?",
         answer: "Mortal Kombat",
-        funfact: "The original Mortal Kombat was developed in 10 months by a group of only four people!"
+        funfact: "The original Mortal Kombat was developed in 10 months by a group of only four people!",
         options: [],
     },
     question7: {
@@ -50,6 +50,38 @@ var game = {
     }
 }
 
+//Function to randomize answer array on propagation 
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+    return array;
+}
+
+var timeLeft = 30;
+var elem = $("#timer");
+
+
+function countdown() {
+    if (timeLeft == -1) {
+        clearTimeout(0);
+    } else {
+        $("#timer").text("Countdown: " + timeLeft + " seconds remaining")
+        timeLeft--;
+    }
+}
+
 //Global Variables
 var correct = 0;
 var incorrect = 0;
@@ -58,14 +90,38 @@ var unanswered = 0;
 //Initial loading with instructions and start option
 $(document).ready(function() {
     $("#title").text("Welcome to my trivia game!");
-    
+    startButton = $("<button>").text("Start!")
+    $("#timer").append(startButton)
+    $("#question").text("When the game starts, simply click on the answer you would like to choose! To start, press the start button!")
+    $("#funfact").text("")
+    $("#option0").text("")
+    $("#option1").text("")
+    $("#option2").text("")
+    $("#option3").text("")
+
+    $("button").on("click", function() {
+        $("#title").text("Question " + 1)
+        $("#timer").text("Countdown:")
+        $("#question").text(game.question1.question)
+
+        setInterval(countdown, 1000);
+        
+        //shuffle and propagate choices on screen        
+        shuffle(game.question1.options)
+        for (i = 0; i < 4; i++) {
+            $("#option" + i).text(game.question1.options[i])
+        }
+        
+    });
+
 
  //TODO:Countdown timer for each question
+
 
  //1 Question with multiple responses each round
 
  //Each round displays if answer was correct and if not, displays correct response
 
  //TODO: After all questions are asked, display trivia data output, and have restart/reset button.
- 
+
 });
