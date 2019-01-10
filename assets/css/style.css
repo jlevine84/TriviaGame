@@ -63,6 +63,12 @@ button {
     padding-top: 20px;
 }
 
-#option1, #option2, #option3, #option4 {
+#option0, #option1, #option2, #option3 {
     margin-top: 15px;
+    font-size: 18px;
+}
+
+.choice:hover {
+    background-color: #666666;
+    cursor: pointer;
 }
