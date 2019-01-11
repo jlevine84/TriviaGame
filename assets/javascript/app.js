@@ -45,7 +45,7 @@ var game = {
     question8: {
         question: "What is the longest lived game series whose Main Playable Character is a female?",
         answer: "Metroid",
-        funfact: "While Samus Aran may not be the first playable female character, Nintendo has been making Metroid games since 1986!", 
+        funfact: "While Samus Aran may 4not be the first playable female character, Nintendo has been making Metroid games since 1986!", 
         options: ["Metroid", "Mortal Kombat", "Pong", "Star Fox"],
     }
 }
@@ -55,6 +55,9 @@ var correct = 0;
 var incorrect = 0;
 var unanswered = 0;
 var timeLeft = 30;
+var IntervalId;
+var gameCounter = 1;
+var key = "question" + gameCounter;
 
 //Function to randomize answer array on propagation 
 function shuffle(array) {
@@ -77,32 +80,87 @@ function shuffle(array) {
 
  //Countdown timer for each question
 function countdown() {
-    if (timeLeft == -1) {
-        clearTimeout(0);
+    if (timeLeft === 0) {
+        clearTimeout(IntervalId);
+        unansweredResult();
+
     } else {
         $("#timer").text("Countdown: " + timeLeft + " seconds remaining")
         timeLeft--;
     }
 };
 
+//Sets the current game question and shuffles the options array
+function nextQuestion() {
+    $("#title").text("Question " + gameCounter)
+    $("#timer").text("Countdown:")
+    $("#question").text(game[key].question)
+
+    intervalId = setInterval(countdown, 1000);
+
+    //shuffle and propagate choices on screen        
+    shuffle(game[key].options)
+    for (i = 0; i < 4; i++) {
+        $("#option" + i).text(game[key].options[i])
+    }
+
+    //Checks an answer each round and displays the result
+    $(".choice").on("click", function() {
+        var answer = $(this).text();
+        if (answer === game[key].answer) {
+            //correct response - add stop to timer and go to response "page"
+            clearInterval(IntervalId);
+            correct++;
+            resultCorrect();
+    
+        } else if (answer !== game[key].answer) {
+            //incorrect response - add stop to timer and go to response "page"
+            clearInterval(IntervalId);
+            incorrect++;
+            resultIncorrect();
+    
+        }
+    });
+};
+
+//TODO: Set a 5 second timer for results pages
 function resultCorrect() {
+
     $("#funfact").text("Correct!")
-    $("#option0").text(game.question1.funfact)
+    $("#option0").text(game[key].funfact)
     $("#option1").text("")
     $("#option2").text("")
     $("#option3").text("")
 }
 
 function resultIncorrect() {
-    $("#funfact").text("Incorrect! The correct answer is: " + game.question1.answer)
-    $("#option0").text(game.question1.funfact)
+    $("#funfact").text("Incorrect! The correct answer is: " + game[key].answer)
+    $("#option0").text(game[key].funfact)
+    $("#option1").text("")
+    $("#option2").text("")
+    $("#option3").text("")
+}
+
+function unansweredResult() {
+    $("#funfact").text("Times up! The correct answer is: " + game[key].answer)
+    $("#option0").text(game[key].funfact)
     $("#option1").text("")
     $("#option2").text("")
     $("#option3").text("")
 }
 
 //TODO: After all questions are asked, display trivia data output, and have restart/reset button.
-
+function endResult () {
+    $("#title").text("Game Over! Check your results below!");
+    restartButton = $("<button>").text("Restart!")
+    $("#timer").append(restartButton)
+    $("#question").text("To play again, hit the Restart button!")
+    $("#funfact").text("Results:")
+    $("#option0").text("Correct Answers: " + correct)
+    $("#option1").text("Incorrect Answers: " + incorrect)
+    $("#option2").text("Unanswered Questions: " + unanswered)
+    $("#option3").text("Grade: " (correct/8*100) + "%")
+}
 
 //Initial loading with instructions and start option
 $(document).ready(function() {
@@ -117,35 +175,9 @@ $(document).ready(function() {
     $("#option3").text("")
 
     $("button").on("click", function() {
-        $("#title").text("Question " + 1)
-        $("#timer").text("Countdown:")
-        $("#question").text(game.question1.question)
-
-        setInterval(countdown, 1000);
-        
-        //shuffle and propagate choices on screen        
-        shuffle(game.question1.options)
-        for (i = 0; i < 4; i++) {
-            $("#option" + i).text(game.question1.options[i])
-        }
-        
-        //Checks an answer  //Each round displays if answer was correct and if not, displays correct response
-        $(".choice").on("click", function() {
-            var answer = $(this).text();
-            if (answer === game.question1.answer) {
-
-                //correct response - add stop to timer and go to response "page"
-                correct++;
-                resultCorrect();
-            } else if (answer !== game.question1.answer) {
-
-                //incorrect response - add stop to timer and go to response "page"
-                incorrect++;
-                resultIncorrect();
-            }
-        });
-
+        nextQuestion();
     });
+
 
 
 });
