@@ -128,9 +128,9 @@ $(document).ready(function() {
     };
 
     function uiReset() {
-        if (!gameSwitch) {
+        if (gameSwitch === false) {
             gameCounter++;
-            gameSwitch = !gameSwitch
+            gameSwitch != gameSwitch
         }
         $("#timer").text("")
         $("#title").text("")
@@ -145,6 +145,7 @@ $(document).ready(function() {
         key = "question" + gameCounter;
         countdownTimer = setInterval(countdown, 1000);
         nextQuestion();
+        gameSwitch != gameSwitch
     }
 
     //Countdown timer for each question
@@ -165,14 +166,10 @@ $(document).ready(function() {
             endResult()
         } else {
         $("#funfact").text("Correct! " + game[key].funfact)
-        $("#option0").text("")
-        $("#option1").text("")
-        $("#option2").text("")
-        $("#option3").text("")
         stop();
-        gameSwitch = !gameSwitch;
         setTimeout(uiReset, 3000)
         }
+        gameSwitch != gameSwitch
     }
 
     function resultIncorrect() {
@@ -180,14 +177,10 @@ $(document).ready(function() {
             endResult()
         }else {
             $("#funfact").text("Incorrect! The correct answer is: " + game[key].answer + ". " + game[key].funfact)
-            $("#option0").text("")
-            $("#option1").text("")
-            $("#option2").text("")
-            $("#option3").text("")
             stop();
-            gameSwitch = !gameSwitch;
             setTimeout(uiReset, 3000)
         }
+        gameSwitch != gameSwitch
     }
 
     function unansweredResult() {
@@ -195,19 +188,16 @@ $(document).ready(function() {
             endResult()
         } else {
         $("#funfact").text("Times up! The correct answer is: " + game[key].answer + ". " + game[key].funfact)
-        $("#option0").text("")
-        $("#option1").text("")
-        $("#option2").text("")
-        $("#option3").text("")
         stop();
-        gameSwitch = !gameSwitch;
         setTimeout(uiReset, 3000)
         }
+        gameSwitch != gameSwitch
     }
 
     // After all questions are asked, display trivia data output, and have restart/reset button.
     function endResult () {
         $("#title").text("Game Over! Check your results below!");
+        $("#timer").text("")
         restartButton = $("<button>").text("Restart!")
         $("#timer").append(restartButton)
         $("#question").text("To play again, hit the Restart button!")
@@ -215,7 +205,7 @@ $(document).ready(function() {
         $("#option0").text("Correct Answers: " + correct)
         $("#option1").text("Incorrect Answers: " + incorrect)
         $("#option2").text("Unanswered Questions: " + unanswered)
-        $("#option3").text("Grade: " (correct/8*100) + "%")
+        $("#option3").text("Grade: " + (correct/8*100) + "%")
 
         gamecounter = 0;
         correct = 0;
@@ -223,7 +213,7 @@ $(document).ready(function() {
         unanswered = 0;
         timeLeft = 15;
         $("button").on("click", function() {
-            nextQuestion();
+            uiReset();
         });
     }
 
