@@ -65,7 +65,7 @@ var gameSwitch = false;
 //Initial loading with instructions and start option
 $(document).ready(function() {
     $("#title").text("Welcome to my trivia game!");
-    startButton = $("<button>").text("Start!")
+    startButton = $("<button>").text("Start!").attr("id", "start")
     $("#timer").append(startButton)
     $("#question").text("When the game starts, simply click on the answer you would like to choose! To start, press the start button!")
     $("#funfact").text("")
@@ -74,7 +74,7 @@ $(document).ready(function() {
     $("#option2").text("")
     $("#option3").text("")
 
-    $("button").on("click", function() {
+    $("#start").on("click", function() {
         uiReset();
     });
         
@@ -100,7 +100,6 @@ $(document).ready(function() {
     //Sets the current game question and shuffles the options array
     function nextQuestion() {
         $("#title").text("Question " + gameCounter)
-        $("#fun-fact").text()
         $("#question").text(game[key].question)
 
         //shuffle and propagate choices on screen        
@@ -112,17 +111,14 @@ $(document).ready(function() {
         //Checks an answer each round and displays the result
         $(".choice").on("click", function() {
             var answer = $(this).text();
+
             if (answer === game[key].answer) {
-                //correct response - add stop to timer and go to response "page"
                 correct++;
                 resultCorrect();
-        
             }
             if (answer !== game[key].answer) {
-                //incorrect response - add stop to timer and go to response "page"
                 incorrect++;
                 resultIncorrect();
-        
             }
         });
     };
@@ -144,8 +140,9 @@ $(document).ready(function() {
         stop();
         key = "question" + gameCounter;
         countdownTimer = setInterval(countdown, 1000);
-        nextQuestion();
         gameSwitch != gameSwitch
+        nextQuestion();
+
     }
 
     //Countdown timer for each question
@@ -169,7 +166,6 @@ $(document).ready(function() {
         stop();
         setTimeout(uiReset, 3000)
         }
-        gameSwitch != gameSwitch
     }
 
     function resultIncorrect() {
@@ -180,7 +176,6 @@ $(document).ready(function() {
             stop();
             setTimeout(uiReset, 3000)
         }
-        gameSwitch != gameSwitch
     }
 
     function unansweredResult() {
@@ -191,14 +186,14 @@ $(document).ready(function() {
         stop();
         setTimeout(uiReset, 3000)
         }
-        gameSwitch != gameSwitch
     }
 
     // After all questions are asked, display trivia data output, and have restart/reset button.
     function endResult () {
+        stop();
         $("#title").text("Game Over! Check your results below!");
         $("#timer").text("")
-        restartButton = $("<button>").text("Restart!")
+        restartButton = $("<button>").text("Restart!").attr("id", "restart")
         $("#timer").append(restartButton)
         $("#question").text("To play again, hit the Restart button!")
         $("#funfact").text("Results:")
@@ -207,12 +202,12 @@ $(document).ready(function() {
         $("#option2").text("Unanswered Questions: " + unanswered)
         $("#option3").text("Grade: " + (correct/8*100) + "%")
 
-        gamecounter = 0;
-        correct = 0;
-        incorrect = 0;
-        unanswered = 0;
-        timeLeft = 15;
-        $("button").on("click", function() {
+
+        $("#restart").on("click", function() {
+            gamecounter = 0;
+            correct = 0;
+            incorrect = 0;
+            unanswered = 0;
             uiReset();
         });
     }
