@@ -58,6 +58,7 @@ var timeLeft = 15;
 var countdownTimer;
 var gameCounter = 0;
 var key = "question" + gameCounter;
+var gameSwitch = false;
 
 
 
@@ -127,6 +128,10 @@ $(document).ready(function() {
     };
 
     function uiReset() {
+        if (!gameSwitch) {
+            gameCounter++;
+            gameSwitch = !gameSwitch
+        }
         $("#timer").text("")
         $("#title").text("")
         $("#question").text("")
@@ -159,12 +164,13 @@ $(document).ready(function() {
         if (gameCounter === 8){
             endResult()
         } else {
-        $("#funfact").text("Correct!")
-        $("#option0").text(game[key].funfact)
+        $("#funfact").text("Correct! " + game[key].funfact)
+        $("#option0").text("")
         $("#option1").text("")
         $("#option2").text("")
         $("#option3").text("")
         stop();
+        gameSwitch = !gameSwitch;
         setTimeout(uiReset, 3000)
         }
     }
@@ -173,12 +179,13 @@ $(document).ready(function() {
         if (gameCounter === 8){
             endResult()
         }else {
-            $("#funfact").text("Incorrect! The correct answer is: " + game[key].answer)
-            $("#option0").text(game[key].funfact)
+            $("#funfact").text("Incorrect! The correct answer is: " + game[key].answer + ". " + game[key].funfact)
+            $("#option0").text("")
             $("#option1").text("")
             $("#option2").text("")
             $("#option3").text("")
             stop();
+            gameSwitch = !gameSwitch;
             setTimeout(uiReset, 3000)
         }
     }
@@ -187,12 +194,13 @@ $(document).ready(function() {
         if (gameCounter === 8){
             endResult()
         } else {
-        $("#funfact").text("Times up! The correct answer is: " + game[key].answer)
-        $("#option0").text(game[key].funfact)
+        $("#funfact").text("Times up! The correct answer is: " + game[key].answer + ". " + game[key].funfact)
+        $("#option0").text("")
         $("#option1").text("")
         $("#option2").text("")
         $("#option3").text("")
         stop();
+        gameSwitch = !gameSwitch;
         setTimeout(uiReset, 3000)
         }
     }
@@ -221,6 +229,5 @@ $(document).ready(function() {
 
     function stop() {
         clearInterval(countdownTimer);
-        gameCounter++;
     }
 });
