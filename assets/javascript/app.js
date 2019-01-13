@@ -39,7 +39,7 @@ var game = {
     question7: {
         question: "What company did video game pioneers Nolan Bushnell and Ted Dabney create?",
         answer: "Atari",
-        funfact: "Atari's first commercial success was the class game Pong!",
+        funfact: "Atari's first commercial success was the classic game Pong!",
         options: ["Atari", "Sega", "Nintendo", "Sony"],
     },
     question8: {
@@ -177,6 +177,7 @@ $(document).ready(function() {
     // After all questions are asked, display trivia data output, and have restart/reset button.
     function endResult () {
         stop();
+
         $("#title").text("Game Over! Check your results below!");
         $("#timer").text("")
         restartButton = $("<button>").text("Restart!").attr("id", "restart")
@@ -188,11 +189,9 @@ $(document).ready(function() {
         $("#option2").text("Unanswered Questions: " + unanswered)
         $("#option3").text("Grade: " + (correct/8*100) + "%")
 
+
         $("#restart").on("click", function() {
-            gamecounter = 0;
-            correct = 0;
-            incorrect = 0;
-            unanswered = 0;
+            reset();
             uiReset();
         });
     }
@@ -211,7 +210,12 @@ $(document).ready(function() {
         }
     });
 
-
+    function reset() {
+        gameCounter = 0;
+        correct = 0;
+        incorrect = 0;
+        unanswered = 0;
+    }
 
     function stop() {
         clearInterval(countdownTimer);
