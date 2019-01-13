@@ -107,20 +107,6 @@ $(document).ready(function() {
         for (i = 0; i < 4; i++) {
             $("#option" + i).text(game[key].options[i])
         }
-
-        //Checks an answer each round and displays the result
-        $(".choice").on("click", function() {
-            var answer = $(this).text();
-
-            if (answer === game[key].answer) {
-                correct++;
-                resultCorrect();
-            }
-            if (answer !== game[key].answer) {
-                incorrect++;
-                resultIncorrect();
-            }
-        });
     };
 
     function uiReset() {
@@ -164,7 +150,7 @@ $(document).ready(function() {
         } else {
         $("#funfact").text("Correct! " + game[key].funfact)
         stop();
-        setTimeout(uiReset, 3000)
+        setTimeout(uiReset, 5000)
         }
     }
 
@@ -174,7 +160,7 @@ $(document).ready(function() {
         }else {
             $("#funfact").text("Incorrect! The correct answer is: " + game[key].answer + ". " + game[key].funfact)
             stop();
-            setTimeout(uiReset, 3000)
+            setTimeout(uiReset, 5000)
         }
     }
 
@@ -184,7 +170,7 @@ $(document).ready(function() {
         } else {
         $("#funfact").text("Times up! The correct answer is: " + game[key].answer + ". " + game[key].funfact)
         stop();
-        setTimeout(uiReset, 3000)
+        setTimeout(uiReset, 5000)
         }
     }
 
@@ -202,7 +188,6 @@ $(document).ready(function() {
         $("#option2").text("Unanswered Questions: " + unanswered)
         $("#option3").text("Grade: " + (correct/8*100) + "%")
 
-
         $("#restart").on("click", function() {
             gamecounter = 0;
             correct = 0;
@@ -211,6 +196,22 @@ $(document).ready(function() {
             uiReset();
         });
     }
+
+    //Checks an answer each round and displays the result
+    $(".choice").on("click", function() {
+        var answer = $(this).text();
+
+        if (answer === game[key].answer) {
+            correct++;
+            resultCorrect();
+        }
+        if (answer !== game[key].answer) {
+            incorrect++;
+            resultIncorrect();
+        }
+    });
+
+
 
     function stop() {
         clearInterval(countdownTimer);
